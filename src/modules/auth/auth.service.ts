@@ -6,7 +6,6 @@ import { AuthRepository } from './auth.repository';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt/jwt-payload.interface';
 import { AuthSignUpCredentialsDto } from './dto/auth-credentials-signup.dto';
-import { User } from 'src/entities/user.entity';
 
 @Injectable()
 export class AuthService {
@@ -21,27 +20,19 @@ export class AuthService {
         return this.authRepository.signUp(signupCredentials);
     }
 
-    //signup - registration
-    async updateUser(
-        signupCredentials: AuthSignUpCredentialsDto,
-        user: User,
-    ): Promise<User> {
-        return this.authRepository.updateUser(signupCredentials, user);
-    }
-
     //signin - login with jwt tokens
     async logIn(
         userCredentialsDto: AuthLoginCredentialsDto,
     ): Promise<{ accesToken: string }> {
-        const username = await this.authRepository.validateUserPassword(
+        const email = await this.authRepository.validateUserPassword(
             userCredentialsDto,
         );
 
-        if (!username) {
+        if (!email) {
             throw new UnauthorizedException('Invalid credentials');
         }
 
-        const payload: JwtPayload = { username };
+        const payload: JwtPayload = { email };
         const accesToken = await this.jwtService.sign(payload);
 
         return { accesToken };

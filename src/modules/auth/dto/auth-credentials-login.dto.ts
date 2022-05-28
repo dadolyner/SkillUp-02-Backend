@@ -1,15 +1,13 @@
 //Data transfer object for logging in
-import { IsString, Matches, MaxLength, MinLength } from 'class-validator';
+import { IsEmail, IsString, MaxLength, MinLength } from 'class-validator';
 
 export class AuthLoginCredentialsDto {
-    @IsString()
+    @IsEmail({ message: 'This is not an email!' })
     email: string;
 
-    @IsString()
-    @MinLength(8)
-    @MaxLength(255)
-    @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, {
-        message: 'password to weak',
-    })
+    @IsString({ message: 'Password is not a string!' })
+    @MinLength(8, { message: 'Password is too short!' })
+    @MaxLength(100 , { message: 'Password is too long!' })
+    // @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, { message: 'password to weak' })
     password: string;
 }
