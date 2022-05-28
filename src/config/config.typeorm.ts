@@ -1,7 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from 'src/entities/user.entity';
+import { Guesses } from 'src/entities/guesses.entity';
+import { Locations } from 'src/entities/locations.entity';
+import { Users } from 'src/entities/users.entity';
 import { AuthModule } from '../modules/auth/auth.module';
 
 @Module({
@@ -19,7 +21,7 @@ import { AuthModule } from '../modules/auth/auth.module';
 	            username: configService.get<string>('DATABASE_USER'),
 	            password: configService.get<string>('DATABASE_PASSWORD'),
 	            database: configService.get<string>('DATABASE_NAME'),
-	            entities: [User],
+	            entities: [Users, Locations, Guesses],
 	            synchronize: true,
             }),
             inject: [ConfigService],

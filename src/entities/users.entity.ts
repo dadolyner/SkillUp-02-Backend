@@ -1,16 +1,19 @@
-//User Entity
+//Users Entity
 import {
     Entity,
     PrimaryGeneratedColumn,
     Column,
     BaseEntity,
     Unique,
+    OneToMany,
 } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Guesses } from './guesses.entity';
+import { Locations } from './locations.entity';
 
 @Entity()
 @Unique(['email'])
-export class User extends BaseEntity {
+export class Users extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -32,6 +35,14 @@ export class User extends BaseEntity {
     @Column()
     avatar: string;
 
+    // Relation
+    @OneToMany(() => Guesses, guess => guess.user, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
+    guesses: Guesses[];
+
+    @OneToMany(() => Locations, location => location.user, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
+    locations: Locations[];
+
+    // Validate user password with bcrypt
     async validatePassword(password: string): Promise<boolean> {
         const hash = await bcrypt.hash(password, this.salt);
         return hash === this.password;
