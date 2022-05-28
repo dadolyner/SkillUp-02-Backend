@@ -1,4 +1,4 @@
-//Users Entity
+// Users Entity
 import {
     Entity,
     PrimaryGeneratedColumn,

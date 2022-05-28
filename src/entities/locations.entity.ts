@@ -1,4 +1,4 @@
-//Locations Entity
+// Locations Entity
 import {
     Entity,
     PrimaryGeneratedColumn,
@@ -16,10 +16,13 @@ export class Locations extends BaseEntity {
     id: string;
 
     @Column()
+    latitude: string;
+
+    @Column()
     longitude: string;
 
     @Column()
-    latitude: string;
+    image: string;
 
     @Column()
     userId: string;

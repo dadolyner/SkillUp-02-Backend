@@ -1,4 +1,4 @@
-//Guesses Entity
+// Guesses Entity
 import {
     Entity,
     PrimaryGeneratedColumn,

@@ -1,5 +1,5 @@
-// Locations Service
+// Guesses Service
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class LocationService {}
+export class GuessesService {}

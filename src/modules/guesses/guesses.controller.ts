@@ -1,5 +1,5 @@
-// Locations Controller
+// Guesses controller
 import { Controller } from '@nestjs/common';
 
 @Controller()
-export class LocationController {}
+export class GuessesController {}

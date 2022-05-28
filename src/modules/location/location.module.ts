@@ -1,14 +1,12 @@
+// Locations Module
 import { LocationService } from './location.service';
-/*
-https://docs.nestjs.com/modules
-*/
-
 import { Module } from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { LocationController } from './location.controller';
 
 @Module({
-    imports: [],
-    controllers: [],
-    providers: [
-        LocationService,],
+    imports: [TypeOrmModule.forFeature([Location])],
+    controllers: [LocationController],
+    providers: [LocationService],
 })
 export class LocationModule { }

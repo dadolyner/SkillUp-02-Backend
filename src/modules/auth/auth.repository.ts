@@ -13,7 +13,8 @@ import { Logger } from '@nestjs/common';
 @EntityRepository(Users)
 export class AuthRepository extends Repository<Users> {
     private logger = new Logger('AuthRepository');
-    //signup our user into the database
+
+    //register user into database
     async register(signupCredentials: AuthSignUpCredentialsDto): Promise<void> {
         const { first_name, last_name, email, password, avatar } = signupCredentials;
 
@@ -25,9 +26,8 @@ export class AuthRepository extends Repository<Users> {
         user.password = await this.hashPassword(password, user.salt);
         user.avatar = avatar;
 
-        try {
-            await this.save(user);
-        } catch (error) {
+        try { await this.save(user) }
+        catch (error) {
             if (error.code == 23505) {
                 this.logger.error(`User with email: ${email} already exists`);
                 throw new ConflictException('User with this email already exist!');
@@ -42,11 +42,8 @@ export class AuthRepository extends Repository<Users> {
         const { email, password } = userCredentialsDto;
         const user = await this.findOne({ email });
 
-        if (user && (await user.validatePassword(password))) {
-            return user.email;
-        } else {
-            return null;
-        }
+        if (user && (await user.validatePassword(password))) return user.email;
+        else return null;
     }
 
     //hash password
