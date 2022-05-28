@@ -25,6 +25,9 @@ export class Locations extends BaseEntity {
     image: string;
 
     @Column()
+    date: string;
+
+    @Column()
     userId: string;
 
     // Relation

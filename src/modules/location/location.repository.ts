@@ -1,8 +1,44 @@
 // Locations Repository
 import { EntityRepository, Repository } from 'typeorm';
 import { Locations } from 'src/entities/locations.entity';
+import { LocationParameters } from './dto/location-parameters.dto';
+import { Users } from 'src/entities/users.entity';
+import { Logger, UnauthorizedException } from '@nestjs/common';
 
 @EntityRepository(Locations)
-export class AuthRepository extends Repository<Locations> {
+export class LocationRepository extends Repository<Locations> {
+    private logger = new Logger('LocationRepository');
 
+    // Create Location
+    async createLocation(user: Users, locationParameters: LocationParameters): Promise<Locations> {
+        const { latitude, longitude, image } = locationParameters;
+
+        const location = new Locations();
+        location.latitude = latitude;
+        location.longitude = longitude;
+        location.image = image;
+        location.date = new Date().toISOString();
+        location.user = user;
+
+        try { 
+            await location.save()
+            this.logger.verbose(`User ${user.first_name} ${user.last_name} successfully created a new location!`);
+        } 
+        catch (error) { return error }
+    }
+
+    // Delete Location
+    async deleteLocation(user: Users, id: string): Promise<Locations> {
+        try {
+            const location = await this.findOne(id);
+            if (location.userId === user.id) {
+                await location.remove();
+                this.logger.verbose(`Location with id ${id} successfully deleted!`);
+                return location;
+            } else {
+                this.logger.error(`User ${user.first_name} ${user.last_name} does not have permission to delete this location!`);
+                throw new UnauthorizedException();
+            }
+        } catch (error) { return error; }
+    }
 }

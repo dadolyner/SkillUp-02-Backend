@@ -18,6 +18,9 @@ export class Guesses extends BaseEntity {
     distance: number;
 
     @Column()
+    date: string;
+
+    @Column()
     userId: string;
 
     @Column()
