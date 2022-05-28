@@ -35,6 +35,8 @@ export class AuthRepository extends Repository<Users> {
                 throw new InternalServerErrorException();
             }
         }
+
+        this.logger.verbose(`User with email: ${email} successfully registered!`);
     }
 
     //validate inserted password
