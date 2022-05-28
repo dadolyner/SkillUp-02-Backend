@@ -8,9 +8,11 @@ import { AuthLoginCredentialsDto } from './dto/auth-credentials-login.dto';
 import { User } from 'src/entities/user.entity';
 import * as bcrypt from 'bcrypt';
 import { AuthSignUpCredentialsDto } from './dto/auth-credentials-signup.dto';
+import { Logger } from '@nestjs/common';
 
 @EntityRepository(User)
 export class AuthRepository extends Repository<User> {
+    private logger = new Logger('AuthRepository');
     //signup our user into the database
     async signUp(signupCredentials: AuthSignUpCredentialsDto): Promise<void> {
         const { first_name, last_name, email, password, avatar } = signupCredentials;
@@ -27,6 +29,7 @@ export class AuthRepository extends Repository<User> {
             await this.save(user);
         } catch (error) {
             if (error.code == 23505) {
+                this.logger.error(`User with email: ${email} already exists`);
                 throw new ConflictException('User with this email already exist!');
             } else {
                 throw new InternalServerErrorException();
@@ -35,9 +38,7 @@ export class AuthRepository extends Repository<User> {
     }
 
     //validate inserted password
-    async validateUserPassword(
-        userCredentialsDto: AuthLoginCredentialsDto,
-    ): Promise<string> {
+    async validateUserPassword(userCredentialsDto: AuthLoginCredentialsDto): Promise<string> {
         const { email, password } = userCredentialsDto;
         const user = await this.findOne({ email });
 
