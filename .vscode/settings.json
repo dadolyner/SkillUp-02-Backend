@@ -1,0 +1,14 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "server": "194.249.251.33",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "SkillUp_02",
+            "database": "Skulj_SkillUp_02",
+            "username": "skillup0103",
+            "password": "Pr3s3nt-85"
+        }
+    ]
+}
