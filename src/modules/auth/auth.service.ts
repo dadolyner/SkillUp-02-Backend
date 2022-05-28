@@ -17,12 +17,12 @@ export class AuthService {
         private jwtService: JwtService,
     ) { }
 
-    //signup - registration
-    async signUp(signupCredentials: AuthSignUpCredentialsDto): Promise<void> {
-        return this.authRepository.signUp(signupCredentials);
+    //register
+    async register(signupCredentials: AuthSignUpCredentialsDto): Promise<void> {
+        return this.authRepository.register(signupCredentials);
     }
 
-    //signin - login with jwt tokens
+    //login
     async logIn(userCredentialsDto: AuthLoginCredentialsDto): Promise<{ accesToken: string }> {
         const { email } = userCredentialsDto;
         const emailExists = await this.authRepository.findOne({ email });

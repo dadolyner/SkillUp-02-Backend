@@ -5,19 +5,19 @@ import {
 } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { AuthLoginCredentialsDto } from './dto/auth-credentials-login.dto';
-import { User } from 'src/entities/user.entity';
+import { Users } from 'src/entities/users.entity';
 import * as bcrypt from 'bcrypt';
 import { AuthSignUpCredentialsDto } from './dto/auth-credentials-signup.dto';
 import { Logger } from '@nestjs/common';
 
-@EntityRepository(User)
-export class AuthRepository extends Repository<User> {
+@EntityRepository(Users)
+export class AuthRepository extends Repository<Users> {
     private logger = new Logger('AuthRepository');
     //signup our user into the database
-    async signUp(signupCredentials: AuthSignUpCredentialsDto): Promise<void> {
+    async register(signupCredentials: AuthSignUpCredentialsDto): Promise<void> {
         const { first_name, last_name, email, password, avatar } = signupCredentials;
 
-        const user = new User();
+        const user = new Users();
         user.first_name = first_name;
         user.last_name = last_name;
         user.email = email;

@@ -13,15 +13,15 @@ import { AuthSignUpCredentialsDto } from './dto/auth-credentials-signup.dto';
 export class AuthController {
     constructor(private authService: AuthService) { }
 
-    //post request for signup
-    @Post('/signup')
-    signUp(@Body(ValidationPipe) authSignupCredentialsDto: AuthSignUpCredentialsDto): Promise<void> {
-        return this.authService.signUp(authSignupCredentialsDto);
-    }
-
     //post request for signin
     @Post('/login')
     logIn(@Body(ValidationPipe) authCredentialsDto: AuthLoginCredentialsDto): Promise<{ accesToken: string }> {
         return this.authService.logIn(authCredentialsDto);
+    }
+
+    //post request for signup
+    @Post('/register')
+    register(@Body(ValidationPipe) authSignupCredentialsDto: AuthSignUpCredentialsDto): Promise<void> {
+        return this.authService.register(authSignupCredentialsDto);
     }
 }
