@@ -27,11 +27,10 @@ export class LocationService {
                 'location.latitude', 
                 'location.longitude', 
                 'location.image', 
-                'location.date', 
-                'location.userId'
+                'location.timestamp',
             ])
             .from(Locations, 'location')
-            .take(locationsLimit)
+            .limit(locationsLimit)
             .getMany();
 
             this.logger.verbose(`All ${getLocations.length} locations successfully retrieved!`);
@@ -51,7 +50,6 @@ export class LocationService {
                 'location.longitude', 
                 'location.image', 
                 'location.date', 
-                'location.userId'
             ])
             .from(Locations, 'location')
             .orderBy('RANDOM()')
@@ -63,6 +61,28 @@ export class LocationService {
         } catch (error) {
             return error;
         }
+    }
+
+    // Get all guesses for a location
+    async getGuesses(id: string): Promise<Guesses[]> {
+        const getGuesses = await this.locationRepository
+        .createQueryBuilder()
+        .select([
+            'guess.id', 
+            'guess.latitude', 
+            'guess.longitude', 
+            'guess.distance', 
+            'guess.timestamp',
+            'userGuessed.first_name',
+            'userGuessed.last_name',
+        ])
+        .from(Guesses, 'guess')
+        .leftJoin('guess.user', 'userGuessed')
+        .where('guess.locationId = :id', { id })
+        .getMany();
+
+        this.logger.verbose(`All ${getGuesses.length} guesses successfully retrieved!`);
+        return getGuesses;
     }
 
     // Create Location
@@ -79,18 +99,41 @@ export class LocationService {
     async guessLocation(user: Users, id: string, guessParameters: GuessParameters): Promise<Guesses> {
         const { latitude, longitude } = guessParameters;
         const location = await this.locationRepository.findOne(id);
-        const guess = new Guesses();
-        guess.latitude = latitude;
-        guess.longitude = longitude;
-        guess.distance = this.calculateDistance(+location.latitude, +location.longitude, +latitude, +longitude);
-        guess.user = user;
-        guess.location = location
-        guess.timestamp = new Date().toISOString();
+        
+        // Check if this user already guessed this location
+        const checkGuess = await this.locationRepository
+        .createQueryBuilder()
+        .select([
+            'guess.id',
+            'guess.latitude',
+            'guess.longitude',
+            'guess.distance',
+            'guess.timestamp',
+            'userGuessed.first_name',
+            'userGuessed.last_name',
+        ])
+        .from(Guesses, 'guess')
+        .leftJoin('guess.user', 'userGuessed')
+        .where('guess.locationId = :id', { id })
+        .andWhere('guess.userId = :userId', { userId: user.id })
+        .getOne();
 
-        try {
-            await guess.save(); 
-            this.logger.verbose(`User ${user.first_name} ${user.last_name} successfully guessed the location with id ${id}!`);
-        } catch (error) { return error; }
+        if(checkGuess) {
+                this.logger.error(`User ${user.first_name} ${user.last_name} already has a guess for this location!`);
+        } else {
+            const guess = new Guesses();
+            guess.latitude = latitude;
+            guess.longitude = longitude;
+            guess.distance = this.calculateDistance(+location.latitude, +location.longitude, +latitude, +longitude);
+            guess.user = user;
+            guess.location = location
+            guess.timestamp = new Date().toISOString();
+            
+            try {
+                await guess.save(); 
+                this.logger.verbose(`User ${user.first_name} ${user.last_name} successfully guessed the location with id ${id}!`);
+            } catch (error) { return error; }
+        }
     }
 
     // Convert degrees to radians
