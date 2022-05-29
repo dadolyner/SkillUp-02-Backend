@@ -79,6 +79,7 @@ export class LocationService {
         .from(Guesses, 'guess')
         .leftJoin('guess.user', 'userGuessed')
         .where('guess.locationId = :id', { id })
+        .orderBy('guess.distance', 'ASC')
         .getMany();
 
         this.logger.verbose(`All ${getGuesses.length} guesses successfully retrieved!`);
@@ -127,7 +128,7 @@ export class LocationService {
             guess.distance = this.calculateDistance(+location.latitude, +location.longitude, +latitude, +longitude);
             guess.user = user;
             guess.location = location
-            guess.timestamp = new Date().toISOString();
+            guess.timestamp = new Date();
             
             try {
                 await guess.save(); 

@@ -17,7 +17,7 @@ export class LocationRepository extends Repository<Locations> {
         location.latitude = latitude;
         location.longitude = longitude;
         location.image = image;
-        location.timestamp = new Date().toISOString();
+        location.timestamp = new Date();
         location.user = user;
 
         try { 

@@ -12,6 +12,7 @@ import { Users } from './users.entity';
 
 @Entity()
 export class Locations extends BaseEntity {
+    
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
@@ -25,7 +26,7 @@ export class Locations extends BaseEntity {
     image: string;
 
     @Column()
-    timestamp: string;
+    timestamp: Date;
 
     @Column()
     userId: string;
