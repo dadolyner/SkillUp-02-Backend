@@ -21,17 +21,17 @@ export class LocationService {
     async getLocations(locationsLimit: number): Promise<Locations[]> {
         try {
             const getLocations = await this.locationRepository
-            .createQueryBuilder()
-            .select([
-                'location.id', 
-                'location.latitude', 
-                'location.longitude', 
-                'location.image', 
-                'location.timestamp',
-            ])
-            .from(Locations, 'location')
-            .limit(locationsLimit)
-            .getMany();
+                .createQueryBuilder()
+                .select([
+                    'location.id',
+                    'location.latitude',
+                    'location.longitude',
+                    'location.image',
+                    'location.timestamp',
+                ])
+                .from(Locations, 'location')
+                .limit(locationsLimit)
+                .getMany();
 
             this.logger.verbose(`All ${getLocations.length} locations successfully retrieved!`);
             return getLocations;
@@ -44,17 +44,17 @@ export class LocationService {
     async getRandomLocation(): Promise<Locations> {
         try {
             const getRandomLocation = this.locationRepository
-            .createQueryBuilder()
-            .select([
-                'location.latitude', 
-                'location.longitude', 
-                'location.image', 
-                'location.date', 
-            ])
-            .from(Locations, 'location')
-            .orderBy('RANDOM()')
-            .limit(1)
-            .getOne();
+                .createQueryBuilder()
+                .select([
+                    'location.latitude',
+                    'location.longitude',
+                    'location.image',
+                    'location.date',
+                ])
+                .from(Locations, 'location')
+                .orderBy('RANDOM()')
+                .limit(1)
+                .getOne();
 
             this.logger.verbose(`Random location successfully retrieved!`);
             return getRandomLocation;
@@ -65,25 +65,30 @@ export class LocationService {
 
     // Get all guesses for a location
     async getGuesses(id: string): Promise<Guesses[]> {
-        const getGuesses = await this.locationRepository
-        .createQueryBuilder()
-        .select([
-            'guess.id', 
-            'guess.latitude', 
-            'guess.longitude', 
-            'guess.distance', 
-            'guess.timestamp',
-            'userGuessed.first_name',
-            'userGuessed.last_name',
-        ])
-        .from(Guesses, 'guess')
-        .leftJoin('guess.user', 'userGuessed')
-        .where('guess.locationId = :id', { id })
-        .orderBy('guess.distance', 'ASC')
-        .getMany();
+        try {
 
-        this.logger.verbose(`All ${getGuesses.length} guesses successfully retrieved!`);
-        return getGuesses;
+            const getGuesses = await this.locationRepository
+                .createQueryBuilder()
+                .select([
+                    'guess.id',
+                    'guess.latitude',
+                    'guess.longitude',
+                    'guess.distance',
+                    'guess.timestamp',
+                    'userGuessed.first_name',
+                    'userGuessed.last_name',
+                ])
+                .from(Guesses, 'guess')
+                .leftJoin('guess.user', 'userGuessed')
+                .where('guess.locationId = :id', { id })
+                .orderBy('guess.distance', 'ASC')
+                .getMany();
+
+            this.logger.verbose(`All ${getGuesses.length} guesses for location ${id} successfully retrieved!`);
+            return getGuesses;
+        } catch (error) {
+            return error;
+        }
     }
 
     // Create Location
@@ -100,27 +105,28 @@ export class LocationService {
     async guessLocation(user: Users, id: string, guessParameters: GuessParameters): Promise<Guesses> {
         const { latitude, longitude } = guessParameters;
         const location = await this.locationRepository.findOne(id);
-        
+
         // Check if this user already guessed this location
         const checkGuess = await this.locationRepository
-        .createQueryBuilder()
-        .select([
-            'guess.id',
-            'guess.latitude',
-            'guess.longitude',
-            'guess.distance',
-            'guess.timestamp',
-            'userGuessed.first_name',
-            'userGuessed.last_name',
-        ])
-        .from(Guesses, 'guess')
-        .leftJoin('guess.user', 'userGuessed')
-        .where('guess.locationId = :id', { id })
-        .andWhere('guess.userId = :userId', { userId: user.id })
-        .getOne();
+            .createQueryBuilder()
+            .select([
+                'guess.id',
+                'guess.latitude',
+                'guess.longitude',
+                'guess.distance',
+                'guess.timestamp',
+                'userGuessed.first_name',
+                'userGuessed.last_name',
+            ])
+            .from(Guesses, 'guess')
+            .leftJoin('guess.user', 'userGuessed')
+            .where('guess.locationId = :id', { id })
+            .andWhere('guess.userId = :userId', { userId: user.id })
+            .getOne();
 
-        if(checkGuess) {
-                this.logger.error(`User ${user.first_name} ${user.last_name} already has a guess for this location!`);
+        if (checkGuess) {
+            this.logger.error(`User ${user.first_name} ${user.last_name} already has a guess for this location!`);
+            throw new Error('User already has a guess for this location!');
         } else {
             const guess = new Guesses();
             guess.latitude = latitude;
@@ -129,29 +135,28 @@ export class LocationService {
             guess.user = user;
             guess.location = location
             guess.timestamp = new Date();
-            
+
             try {
-                await guess.save(); 
+                await guess.save();
                 this.logger.verbose(`User ${user.first_name} ${user.last_name} successfully guessed the location with id ${id}!`);
             } catch (error) { return error; }
         }
     }
-
-    // Convert degrees to radians
-    toRad(value: number): number { return value * Math.PI / 180 }
-
+    
     // Calculate distance between two points
     calculateDistance(lat1: number, long1: number, lat2: number, long2: number): number {
-        const R = 6371; 
-        const latDiff = this.toRad(lat2-lat1);
-        const lonDiff = this.toRad(long2-long1);
-        const latitude1 = this.toRad(lat1);
-        const latitude2 = this.toRad(lat2);
+        // Convert degrees to radians
+        const toRad = (value: number): number => { return value * Math.PI / 180 }
+        const earthRadius = 6371;
+        const latDiff = toRad(lat2 - lat1);
+        const lonDiff = toRad(long2 - long1);
+        const latitude1 = toRad(lat1);
+        const latitude2 = toRad(lat2);
 
-        const a = Math.sin(latDiff/2) * Math.sin(latDiff/2) + Math.sin(lonDiff/2) * Math.sin(lonDiff/2) * Math.cos(latitude1) * Math.cos(latitude2); 
-        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)); 
-        const d = R * c;
-        
+        const a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) + Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2) * Math.cos(latitude1) * Math.cos(latitude2);
+        const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        const d = earthRadius * c;
+
         return Math.trunc(d);
     }
 }
