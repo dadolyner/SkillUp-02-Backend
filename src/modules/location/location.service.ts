@@ -33,7 +33,7 @@ export class LocationService {
                 .limit(locationsLimit)
                 .getMany();
 
-            this.logger.verbose(`All ${getLocations.length} locations successfully retrieved!`);
+            this.logger.verbose(`Successfully retrieved all ${getLocations.length} locations!`);
             return getLocations;
         } catch (error) {
             return error;
@@ -84,7 +84,7 @@ export class LocationService {
                 .orderBy('guess.distance', 'ASC')
                 .getMany();
 
-            this.logger.verbose(`Successfully retrieved! ${getGuesses.length} guesses for location with id: ${id}!`);
+            this.logger.verbose(`Successfully retrieved ${getGuesses.length} guesses for location with id: ${id}!`);
             return getGuesses;
         } catch (error) {
             return error;
@@ -130,7 +130,7 @@ export class LocationService {
             .getOne();
 
         if (checkGuess) {
-            this.logger.error(`User ${user.first_name} ${user.last_name} already has a guess for this location!`);
+            this.logger.error(`User with email: ${user.email} already has a guess for this location!`);
             throw new Error('User already has a guess for this location!');
         } else {
             const guess = new Guesses();
@@ -143,7 +143,7 @@ export class LocationService {
 
             try {
                 await guess.save();
-                this.logger.verbose(`User ${user.first_name} ${user.last_name} successfully guessed the location with id ${id}!`);
+                this.logger.verbose(`User with email: ${user.email} successfully guessed the location with id ${id}!`);
             } catch (error) { return error; }
         }
     }

@@ -22,7 +22,7 @@ export class LocationRepository extends Repository<Locations> {
             location.user = user;
 
             await location.save()
-            this.logger.verbose(`User ${user.first_name} ${user.last_name} successfully created a new location at Lat: ${latitude} and Long: ${longitude}!`);
+            this.logger.verbose(`User with email: ${user.email} successfully created a new location at Lat: ${latitude} and Long: ${longitude}!`);
         }
         catch (error) { return error }
     }
@@ -33,10 +33,10 @@ export class LocationRepository extends Repository<Locations> {
             const location = await this.findOne(id);
             if (location.userId === user.id) {
                 await location.remove();
-                this.logger.verbose(`Location with id ${id} successfully deleted!`);
+                this.logger.verbose(`user with email: ${user.email} has successfully deleted location with id: ${id}!`);
                 return location;
             } else {
-                this.logger.error(`User ${user.first_name} ${user.last_name} does not have permission to delete this location!`);
+                this.logger.error(`User with email: ${user.email} does not have permission to delete this location!`);
                 throw new UnauthorizedException();
             }
         } catch (error) { return error; }
@@ -54,10 +54,10 @@ export class LocationRepository extends Repository<Locations> {
                 location.image = image;
                 location.timestamp = new Date();
                 await location.save();
-                this.logger.verbose(`User ${user.first_name} ${user.last_name} successfully edited the location with id ${id}!`);
+                this.logger.verbose(`User with email: ${user.email} successfully edited the location with id ${id}!`);
             } catch (error) { return error; }
         } else {
-            this.logger.error(`User ${user.first_name} ${user.last_name} does not have permission to edit this location!`);
+            this.logger.error(`User with email: ${user.email} does not have permission to edit this location!`);
             throw new UnauthorizedException();
         }
     }

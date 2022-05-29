@@ -40,7 +40,7 @@ export class UserService {
                 .where('user.id = :id', { id: user.id })
                 .getOne();
 
-            this.logger.verbose(`Information for logedin user ${user.id} successfully retrieved!`);
+            this.logger.verbose(`Information for user with email: ${userInfo.email} successfully retrieved!`);
             return userInfo;
         
     }
@@ -72,7 +72,7 @@ export class UserService {
                 .where(userId)
                 .getOne();
 
-            this.logger.verbose(`Information for user ${userInfo.first_name} ${userInfo.last_name} successfully retrieved!`);
+            this.logger.verbose(`Information for user with email: ${userInfo.email} successfully retrieved!`);
             return userInfo;
         } catch (error) {
             return error;

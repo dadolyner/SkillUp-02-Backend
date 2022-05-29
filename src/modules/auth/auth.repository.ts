@@ -55,7 +55,7 @@ export class AuthRepository extends Repository<Users> {
             this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its information!`);
             await this.save(currentUser);
         } catch (error) {
-            this.logger.error(`User with email ${email} already exists!`);
+            this.logger.error(`User with email: ${email} already exists!`);
             throw new InternalServerErrorException();
         }
     }
@@ -82,7 +82,7 @@ export class AuthRepository extends Repository<Users> {
                         <a href="http://localhost:3000/auth/change-password/${passRequestToken}">Change password</a>`,
             });
 
-            this.logger.verbose(`User: ${first_name} ${last_name} has requested password change!`);
+            this.logger.verbose(`User with email: ${currentUser.email} has requested password change!`);
             await this.save(currentUser);
         } catch (error) {
             this.logger.error(`User with email ${email} does not exist!`);
@@ -94,8 +94,8 @@ export class AuthRepository extends Repository<Users> {
     async changePassword(user: Users, token: string, oldPassword: string, newPassword: string): Promise<void> {
         try {
             const currentUser = await this.findOne(user);
-            if (!currentUser.passRequestToken || currentUser.passRequestTokenExpiryDate < new Date().toString()) { this.logger.error(`Reset password token for user: ${currentUser.first_name} ${currentUser.last_name} has expired!`); throw new UnauthorizedException();}
-            if (!await currentUser.validatePassword(oldPassword)) { this.logger.error(`User: ${currentUser.first_name} ${currentUser.last_name} entered wrong old password!`); throw new InternalServerErrorException();}
+            if (!currentUser.passRequestToken || currentUser.passRequestTokenExpiryDate < new Date().toString()) { this.logger.error(`Reset password token for user with email: ${currentUser.email} has expired!`); throw new UnauthorizedException();}
+            if (!await currentUser.validatePassword(oldPassword)) { this.logger.error(`User with email: ${currentUser.email} entered wrong old password!`); throw new InternalServerErrorException();}
 
             currentUser.password = await this.hashPassword(newPassword, currentUser.salt);
             currentUser.passRequestToken = null;
@@ -109,7 +109,7 @@ export class AuthRepository extends Repository<Users> {
                 html: `<p>Your password has been changed successfully!</p>`,
             });
 
-            this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its password!`);
+            this.logger.verbose(`User with email: ${currentUser.email} successfully changed its password!`);
             await this.save(currentUser);
         } catch (error) { return error; }
     }
@@ -119,10 +119,10 @@ export class AuthRepository extends Repository<Users> {
         const currentUser = await this.findOne(user);
         try {
             currentUser.avatar = image.toString();
-            this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its profile image!`);
+            this.logger.verbose(`User with email: ${currentUser.email} has successfully changed its profile image!`);
             await this.save(currentUser);
         } catch (error) {
-            this.logger.error(`There was an error trying to update profile image for user: ${currentUser.first_name} ${currentUser.last_name}!`);
+            this.logger.error(`There was an error trying to update profile image for user with email: ${currentUser.email}!`);
             throw new InternalServerErrorException();
         }
     }
