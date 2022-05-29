@@ -15,6 +15,12 @@ export class Guesses extends BaseEntity {
     id: string;
 
     @Column()
+    latitude: string;
+
+    @Column()
+    longitude: string;
+
+    @Column()
     distance: number;
 
     @Column()

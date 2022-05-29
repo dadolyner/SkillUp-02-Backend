@@ -22,7 +22,7 @@ export class LocationRepository extends Repository<Locations> {
 
         try { 
             await location.save()
-            this.logger.verbose(`User ${user.first_name} ${user.last_name} successfully created a new location!`);
+            this.logger.verbose(`User ${user.first_name} ${user.last_name} successfully created a new location at Lat: ${latitude} and Long: ${longitude}!`);
         } 
         catch (error) { return error }
     }
