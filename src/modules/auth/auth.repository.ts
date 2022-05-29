@@ -100,6 +100,15 @@ export class AuthRepository extends Repository<Users> {
             currentUser.password = await this.hashPassword(newPassword, currentUser.salt);
             currentUser.passRequestToken = null;
             currentUser.passRequestTokenExpiryDate = null;
+
+            transporter.sendMail({
+                from: '"Geotagger Support" <skulj@geotagger.com>',
+                to: currentUser.email,
+                subject: 'Password change request',
+                text: ``,
+                html: `<p>Your password has been changed successfully!</p>`,
+            });
+
             this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its password!`);
             await this.save(currentUser);
         } catch (error) { return error; }
