@@ -2,6 +2,7 @@
 import {
     Body,
     Controller,
+    Param,
     Patch,
     Post,
     UseGuards,
@@ -40,9 +41,9 @@ export class AuthController {
 
     // Change user password
     @UseGuards(AuthGuard())
-    @Patch('/change-password')
-    changePassword(@GetUser() user: Users, @Body('oldPassword') oldPassword: string, @Body('newPassword') newPassword: string): Promise<void> {
-        return this.authService.changePassword(user, oldPassword, newPassword);
+    @Patch('/change-password/:id')
+    changePassword(@GetUser() user: Users, @Param('id') id: string, @Body('oldPassword') oldPassword: string, @Body('newPassword') newPassword: string): Promise<void> {
+        return this.authService.changePassword(user, id, oldPassword, newPassword);
     }
 
     // Change user avatar

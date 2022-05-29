@@ -54,8 +54,8 @@ export class AuthService {
     }
 
     // Update user password
-    async changePassword(user: Users, oldPassword: string, newPassword: string): Promise<void> {
-        return this.authRepository.changePassword(user, oldPassword, newPassword);
+    async changePassword(user: Users, id: string, oldPassword: string, newPassword: string): Promise<void> {
+        return this.authRepository.changePassword(user, id, oldPassword, newPassword);
     }
 
     // Update user avatar
