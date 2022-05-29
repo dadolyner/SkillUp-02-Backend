@@ -1,4 +1,4 @@
-//Data Transfer Object for signing up
+// Data Transfer Object for signing up
 import { IsEmail, IsString, IsUrl, MaxLength, MinLength } from 'class-validator';
 
 export class AuthSignUpCredentialsDto {
@@ -14,7 +14,6 @@ export class AuthSignUpCredentialsDto {
     @IsString()
     @MinLength(8, { message: 'Password is too short!' })
     @MaxLength(100, { message: 'Password is too long!' })
-    // @Matches(/(?:(?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$/, { message: 'password to weak' })
     password: string;
 
     @IsUrl( { message: 'This is not a valid url!' } )

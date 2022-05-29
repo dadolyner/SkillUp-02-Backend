@@ -1,4 +1,4 @@
-//Strategy for JWT authentication
+// Strategy for JWT authentication
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';

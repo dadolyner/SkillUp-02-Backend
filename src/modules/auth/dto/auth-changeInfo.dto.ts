@@ -1,4 +1,4 @@
-//Data Transfer Object for signing up
+// Data Transfer Object for changing user info
 import { IsEmail, IsString } from 'class-validator';
 
 export class AuthChangeInfoDto {

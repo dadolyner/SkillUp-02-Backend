@@ -8,14 +8,15 @@ import { Users } from 'src/entities/users.entity';
 @Controller('user')
 export class UserController {
     constructor(private userService: UserService) { }
-    //get user information
+    
+    // Get logged in user info
     @UseGuards(AuthGuard())
     @Get('/me')
     getUserInfo(@GetUser() user: Users) {
         return this.userService.getUserInfo(user);
     }
 
-    //get user information by its id
+    // Get user information by its id
     @Get('/:id')
     getUserInfoById(@Param() userId: string) {
         return this.userService.getUserInfoById(userId);

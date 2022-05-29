@@ -13,7 +13,7 @@ export class UserService {
         private userRepository: UserRepository,
     ) { }
 
-    //outputs user info without sensitive data
+    // Get logged in user info
     async getUserInfo(user: Users): Promise<Users> {
         try {
             const userInfo = await this.userRepository
@@ -47,7 +47,7 @@ export class UserService {
         }
     }
 
-    //outputs selected user info by passing in his UUID without sensitive data
+    // Get user info by its id
     async getUserInfoById(userId: string): Promise<Users> {
         try {
             const userInfo = await this.userRepository

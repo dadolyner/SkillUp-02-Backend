@@ -13,17 +13,17 @@ export class LocationRepository extends Repository<Locations> {
     async createLocation(user: Users, locationParameters: LocationParameters): Promise<Locations> {
         const { latitude, longitude, image } = locationParameters;
 
-        const location = new Locations();
-        location.latitude = latitude;
-        location.longitude = longitude;
-        location.image = image;
-        location.timestamp = new Date();
-        location.user = user;
+        try {
+            const location = new Locations();
+            location.latitude = latitude;
+            location.longitude = longitude;
+            location.image = image;
+            location.timestamp = new Date();
+            location.user = user;
 
-        try { 
             await location.save()
             this.logger.verbose(`User ${user.first_name} ${user.last_name} successfully created a new location at Lat: ${latitude} and Long: ${longitude}!`);
-        } 
+        }
         catch (error) { return error }
     }
 
@@ -45,10 +45,9 @@ export class LocationRepository extends Repository<Locations> {
     // Edit location
     async editLocation(user: Users, id: string, locationParameters: LocationParameters): Promise<Locations> {
         const { latitude, longitude, image } = locationParameters;
-
         const location = await this.findOne(id);
-        if (location.userId === user.id) {
 
+        if (location.userId === user.id) {
             try {
                 location.latitude = latitude;
                 location.longitude = longitude;

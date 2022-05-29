@@ -36,9 +36,11 @@ export class Users extends BaseEntity {
     avatar: string;
 
     // Relation
+    // Guess
     @OneToMany(() => Guesses, guess => guess.user, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
-    guesses: Guesses[];
-
+    guess: Guesses[];
+    
+    // Location
     @OneToMany(() => Locations, location => location.user, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
     locations: Locations[];
 

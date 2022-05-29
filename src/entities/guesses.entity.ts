@@ -33,9 +33,11 @@ export class Guesses extends BaseEntity {
     locationId: string;
 
     // Relations
-    @ManyToOne(() => Users, user => user.guesses, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
+    // User
+    @ManyToOne(() => Users, user => user.guess, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
     user: Users;
-
-    @ManyToOne(() => Locations, location => location.guesses, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
+    
+    // Location
+    @ManyToOne(() => Locations, location => location.guess, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
     location: Locations;
 }

@@ -1,4 +1,4 @@
-//Authorization Repository
+// Authorization Repository
 import {
     ConflictException,
     InternalServerErrorException,
@@ -43,13 +43,13 @@ export class AuthRepository extends Repository<Users> {
     // Change user information
     async changeUserInfo(user: Users, userInfo: AuthChangeInfoDto): Promise<void> {
         const { first_name, last_name, email } = userInfo;
-        
-        try {    
+
+        try {
             const currentUser = await this.findOne(user);
             currentUser.first_name = first_name;
             currentUser.last_name = last_name;
             currentUser.email = email;
-            
+
             this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its information!`);
             await this.save(currentUser);
         } catch (error) {
@@ -78,16 +78,20 @@ export class AuthRepository extends Repository<Users> {
     // Change user avatar
     async changeAvatar(user: Users, image: string): Promise<void> {
         const currentUser = await this.findOne(user);
-        currentUser.avatar = image.toString();
-        this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its profile image!`);
-        await this.save(currentUser);
+        try {
+            currentUser.avatar = image.toString();
+            this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its profile image!`);
+            await this.save(currentUser);
+        } catch (error) {
+            this.logger.error(`There was an error trying to update profile image for user: ${currentUser.first_name} ${currentUser.last_name}!`);
+            throw new InternalServerErrorException();
+        }
     }
 
     //validate inserted password
     async validateUserPassword(userCredentialsDto: AuthLoginCredentialsDto): Promise<string> {
         const { email, password } = userCredentialsDto;
         const user = await this.findOne({ email });
-
         if (user && (await user.validatePassword(password))) return user.email;
         else return null;
     }

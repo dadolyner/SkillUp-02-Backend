@@ -32,9 +32,11 @@ export class Locations extends BaseEntity {
     userId: string;
 
     // Relation
+    // User
     @ManyToOne(() => Users, user => user.locations, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
     user: Users;
-
+    
+    // Guesses
     @OneToMany(() => Guesses, guess => guess.location, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
-    guesses: Guesses[];
+    guess: Guesses[];
 }

@@ -30,22 +30,26 @@ export class AuthService {
         const emailExists = await this.authRepository.findOne({ email });
         const validate = await this.authRepository.validateUserPassword(userCredentialsDto);
 
-        if (!validate) {
-            if(!emailExists) {
-                this.logger.error(`User with email: ${userCredentialsDto.email} does not exist!`);
-                throw new UnauthorizedException('Email not exists');
-            } else {
-                this.logger.error(`User tried to login but has entered Invalid credentials`);
-                throw new UnauthorizedException('Invalid credentials');
+        try {
+            if (!validate) {
+                if (!emailExists) {
+                    this.logger.error(`User with email: ${userCredentialsDto.email} does not exist!`);
+                    throw new UnauthorizedException('Email not exists');
+                } else {
+                    this.logger.error(`User tried to login but has entered Invalid credentials`);
+                    throw new UnauthorizedException('Invalid credentials');
+                }
             }
+
+            const payload: JwtPayload = { email };
+            const accesToken = await this.jwtService.sign(payload);
+
+            this.logger.verbose(`User with email: ${userCredentialsDto.email} logged in!`);
+
+            return { accesToken };
+        } catch (error) {
+            throw new UnauthorizedException('Invalid credentials');
         }
-
-        const payload: JwtPayload = { email };
-        const accesToken = await this.jwtService.sign(payload);
-
-        this.logger.verbose(`User with email: ${userCredentialsDto.email} logged in!`);
-        
-        return { accesToken };
     }
 
     // Change user information

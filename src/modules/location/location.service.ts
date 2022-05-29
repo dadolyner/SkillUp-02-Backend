@@ -84,7 +84,7 @@ export class LocationService {
                 .orderBy('guess.distance', 'ASC')
                 .getMany();
 
-            this.logger.verbose(`All ${getGuesses.length} guesses for location ${id} successfully retrieved!`);
+            this.logger.verbose(`Successfully retrieved! ${getGuesses.length} guesses for location with id: ${id}!`);
             return getGuesses;
         } catch (error) {
             return error;
