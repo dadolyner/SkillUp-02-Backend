@@ -41,8 +41,8 @@ export class AuthController {
     // Change user password
     @UseGuards(AuthGuard())
     @Patch('/change-password')
-    changePassword(@GetUser() user: Users, @Body('password') password: string): Promise<void> {
-        return this.authService.changePassword(user, password);
+    changePassword(@GetUser() user: Users, @Body('oldPassword') oldPassword: string, @Body('newPassword') newPassword: string): Promise<void> {
+        return this.authService.changePassword(user, oldPassword, newPassword);
     }
 
     // Change user avatar

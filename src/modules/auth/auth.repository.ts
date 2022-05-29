@@ -58,13 +58,21 @@ export class AuthRepository extends Repository<Users> {
         }
     }
 
-
     // Change user password
-    async changePassword(user: Users, password: string): Promise<void> {
-        const currentUser = await this.findOne(user);
-        currentUser.password = await this.hashPassword(password, currentUser.salt);
-        this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its password!`);
-        await this.save(currentUser);
+    async changePassword(user: Users, oldPassword: string, newPassword: string): Promise<void> {
+        try {
+            const currentUser = await this.findOne(user);
+            if (await currentUser.validatePassword(oldPassword)) {
+                currentUser.password = await this.hashPassword(newPassword, currentUser.salt);
+                this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its password!`);
+                await this.save(currentUser);
+            } else {
+                this.logger.error(`User ${currentUser.first_name} ${currentUser.last_name} entered wrong old password!`);
+                throw new InternalServerErrorException();
+            }
+        } catch (error) {
+            return error;
+        }
     }
 
     // Change user avatar
