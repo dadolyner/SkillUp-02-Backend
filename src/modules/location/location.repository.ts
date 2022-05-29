@@ -41,4 +41,25 @@ export class LocationRepository extends Repository<Locations> {
             }
         } catch (error) { return error; }
     }
+
+    // Edit location
+    async editLocation(user: Users, id: string, locationParameters: LocationParameters): Promise<Locations> {
+        const { latitude, longitude, image } = locationParameters;
+
+        const location = await this.findOne(id);
+        if (location.userId === user.id) {
+
+            try {
+                location.latitude = latitude;
+                location.longitude = longitude;
+                location.image = image;
+                location.timestamp = new Date();
+                await location.save();
+                this.logger.verbose(`User ${user.first_name} ${user.last_name} successfully edited the location with id ${id}!`);
+            } catch (error) { return error; }
+        } else {
+            this.logger.error(`User ${user.first_name} ${user.last_name} does not have permission to edit this location!`);
+            throw new UnauthorizedException();
+        }
+    }
 }

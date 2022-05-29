@@ -101,6 +101,11 @@ export class LocationService {
         return this.locationRepository.deleteLocation(user, id);
     }
 
+    // Edit Location
+    async editLocation(user: Users, id: string, locationParameters: LocationParameters): Promise<Locations> {
+        return this.locationRepository.editLocation(user, id, locationParameters);
+    }
+
     // Guess Location by id
     async guessLocation(user: Users, id: string, guessParameters: GuessParameters): Promise<Guesses> {
         const { latitude, longitude } = guessParameters;

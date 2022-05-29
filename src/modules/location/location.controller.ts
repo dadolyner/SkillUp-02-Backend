@@ -1,5 +1,5 @@
 // Locations Controller
-import { Body, Controller, Delete, Get, Param, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Guesses } from 'src/entities/guesses.entity';
 import { Locations } from 'src/entities/locations.entity';
@@ -44,6 +44,13 @@ export class LocationController {
     @Delete('/delete/:id')
     async deleteLocation(@GetUser() user: Users, @Param('id') id: string): Promise<Locations> {
         return await this.locationService.deleteLocation(user, id);
+    }
+
+    // Edit Location
+    @UseGuards(AuthGuard())
+    @Patch('/edit/:id')
+    async editLocation(@GetUser() user: Users, @Param('id') id: string, @Body() locationParameters: LocationParameters): Promise<Locations> {
+        return await this.locationService.editLocation(user, id, locationParameters);
     }
 
     // Guess Location
