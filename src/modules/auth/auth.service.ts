@@ -7,6 +7,8 @@ import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from './jwt/jwt-payload.interface';
 import { AuthSignUpCredentialsDto } from './dto/auth-credentials-signup.dto';
 import { Logger } from '@nestjs/common';
+import { Users } from 'src/entities/users.entity';
+import { AuthChangeInfoDto } from './dto/auth-changeInfo.dto';
 
 @Injectable()
 export class AuthService {
@@ -33,7 +35,7 @@ export class AuthService {
                 this.logger.error(`User with email: ${userCredentialsDto.email} does not exist!`);
                 throw new UnauthorizedException('Email not exists');
             } else {
-                this.logger.error(`Invalid credentials`);
+                this.logger.error(`User tried to login but has entered Invalid credentials`);
                 throw new UnauthorizedException('Invalid credentials');
             }
         }
@@ -44,5 +46,20 @@ export class AuthService {
         this.logger.verbose(`User with email: ${userCredentialsDto.email} logged in!`);
         
         return { accesToken };
+    }
+
+    // Change user information
+    async changeUserInfo(user: Users, userInfo: AuthChangeInfoDto): Promise<void> {
+        return this.authRepository.changeUserInfo(user, userInfo);
+    }
+
+    // Update user password
+    async changePassword(user: Users, password: string): Promise<void> {
+        return this.authRepository.changePassword(user, password);
+    }
+
+    // Update user avatar
+    async changeAvatar(user: Users, image: string): Promise<void> {
+        return this.authRepository.changeAvatar(user, image);
     }
 }

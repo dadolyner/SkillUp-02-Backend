@@ -9,6 +9,7 @@ import { Users } from 'src/entities/users.entity';
 import * as bcrypt from 'bcrypt';
 import { AuthSignUpCredentialsDto } from './dto/auth-credentials-signup.dto';
 import { Logger } from '@nestjs/common';
+import { AuthChangeInfoDto } from './dto/auth-changeInfo.dto';
 
 @EntityRepository(Users)
 export class AuthRepository extends Repository<Users> {
@@ -37,6 +38,41 @@ export class AuthRepository extends Repository<Users> {
         }
 
         this.logger.verbose(`User with email: ${email} successfully registered!`);
+    }
+
+    // Change user information
+    async changeUserInfo(user: Users, userInfo: AuthChangeInfoDto): Promise<void> {
+        const { first_name, last_name, email } = userInfo;
+        
+        try {    
+            const currentUser = await this.findOne(user);
+            currentUser.first_name = first_name;
+            currentUser.last_name = last_name;
+            currentUser.email = email;
+            
+            this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its information!`);
+            await this.save(currentUser);
+        } catch (error) {
+            this.logger.error(`User with email ${email} already exists!`);
+            throw new InternalServerErrorException();
+        }
+    }
+
+
+    // Change user password
+    async changePassword(user: Users, password: string): Promise<void> {
+        const currentUser = await this.findOne(user);
+        currentUser.password = await this.hashPassword(password, currentUser.salt);
+        this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its password!`);
+        await this.save(currentUser);
+    }
+
+    // Change user avatar
+    async changeAvatar(user: Users, image: string): Promise<void> {
+        const currentUser = await this.findOne(user);
+        currentUser.avatar = image.toString();
+        this.logger.verbose(`User ${currentUser.first_name} ${currentUser.last_name} successfully changed its profile image!`);
+        await this.save(currentUser);
     }
 
     //validate inserted password
