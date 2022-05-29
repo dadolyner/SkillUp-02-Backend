@@ -25,7 +25,7 @@ export class Locations extends BaseEntity {
     image: string;
 
     @Column()
-    date: string;
+    timestamp: string;
 
     @Column()
     userId: string;

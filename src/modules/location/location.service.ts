@@ -85,7 +85,7 @@ export class LocationService {
         guess.distance = this.calculateDistance(+location.latitude, +location.longitude, +latitude, +longitude);
         guess.user = user;
         guess.location = location
-        guess.date = new Date().toISOString();
+        guess.timestamp = new Date().toISOString();
 
         try {
             await guess.save(); 
