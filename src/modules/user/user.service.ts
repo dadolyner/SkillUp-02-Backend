@@ -15,7 +15,7 @@ export class UserService {
 
     // Get logged in user info
     async getUserInfo(user: Users): Promise<Users> {
-        try {
+        
             const userInfo = await this.userRepository
                 .createQueryBuilder()
                 .select([
@@ -35,16 +35,14 @@ export class UserService {
                     'guess.timestamp',
                 ])
                 .from(Users, 'user')
-                .leftJoin('user.locations', 'location')
-                .leftJoin('user.guesses', 'guess')
+                .leftJoin('user.location', 'location')
+                .leftJoin('user.guess', 'guess')
                 .where('user.id = :id', { id: user.id })
                 .getOne();
 
             this.logger.verbose(`Information for logedin user ${user.id} successfully retrieved!`);
             return userInfo;
-        } catch (error) {
-            return error;
-        }
+        
     }
 
     // Get user info by its id
@@ -69,8 +67,8 @@ export class UserService {
                     'guess.timestamp',
                 ])
                 .from(Users, 'user')
-                .leftJoin('user.locations', 'location')
-                .leftJoin('user.guesses', 'guess')
+                .leftJoin('user.location', 'location')
+                .leftJoin('user.guess', 'guess')
                 .where(userId)
                 .getOne();
 

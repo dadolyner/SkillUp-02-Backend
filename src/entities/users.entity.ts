@@ -35,14 +35,20 @@ export class Users extends BaseEntity {
     @Column()
     avatar: string;
 
+    @Column({ nullable: true, default: null })
+    passRequestToken: string;
+
+    @Column({ nullable: true, default: null })
+    passRequestTokenExpiryDate: string;
+
     // Relation
     // Guess
     @OneToMany(() => Guesses, guess => guess.user, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
     guess: Guesses[];
-    
+
     // Location
     @OneToMany(() => Locations, location => location.user, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
-    locations: Locations[];
+    location: Locations[];
 
     // Validate user password with bcrypt
     async validatePassword(password: string): Promise<boolean> {

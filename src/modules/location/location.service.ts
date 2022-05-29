@@ -49,7 +49,7 @@ export class LocationService {
                     'location.latitude',
                     'location.longitude',
                     'location.image',
-                    'location.date',
+                    'location.timestamp',
                 ])
                 .from(Locations, 'location')
                 .orderBy('RANDOM()')

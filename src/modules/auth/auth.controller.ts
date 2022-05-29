@@ -39,11 +39,18 @@ export class AuthController {
         return this.authService.changeUserInfo(user, userInfo);
     }
 
+    // Request password reset
+    @UseGuards(AuthGuard())
+    @Post('/request-password-change')
+    requestPasswordChange(@GetUser() user: Users): Promise<void> {
+        return this.authService.requestPasswordChange(user);
+    }
+
     // Change user password
     @UseGuards(AuthGuard())
-    @Patch('/change-password/:id')
-    changePassword(@GetUser() user: Users, @Param('id') id: string, @Body('oldPassword') oldPassword: string, @Body('newPassword') newPassword: string): Promise<void> {
-        return this.authService.changePassword(user, id, oldPassword, newPassword);
+    @Patch('/change-password/:token')
+    changePassword(@GetUser() user: Users, @Param('token') token: string, @Body('oldPassword') oldPassword: string, @Body('newPassword') newPassword: string): Promise<void> {
+        return this.authService.changePassword(user, token, oldPassword, newPassword);
     }
 
     // Change user avatar

@@ -52,14 +52,19 @@ export class AuthService {
         }
     }
 
-    // Change user information
-    async changeUserInfo(user: Users, userInfo: AuthChangeInfoDto): Promise<void> {
-        return this.authRepository.changeUserInfo(user, userInfo);
+    // Request password reset
+    async requestPasswordChange(user: Users): Promise<void> {
+        return this.authRepository.requestPasswordChange(user);
     }
 
     // Update user password
-    async changePassword(user: Users, id: string, oldPassword: string, newPassword: string): Promise<void> {
-        return this.authRepository.changePassword(user, id, oldPassword, newPassword);
+    async changePassword(user: Users, token: string, oldPassword: string, newPassword: string): Promise<void> {
+        return this.authRepository.changePassword(user, token, oldPassword, newPassword);
+    }
+
+    // Change user information
+    async changeUserInfo(user: Users, userInfo: AuthChangeInfoDto): Promise<void> {
+        return this.authRepository.changeUserInfo(user, userInfo);
     }
 
     // Update user avatar

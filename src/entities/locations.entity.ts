@@ -33,7 +33,7 @@ export class Locations extends BaseEntity {
 
     // Relation
     // User
-    @ManyToOne(() => Users, user => user.locations, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
+    @ManyToOne(() => Users, user => user.location, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })
     user: Users;
     
     // Guesses
