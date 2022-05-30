@@ -66,7 +66,6 @@ export class LocationService {
     // Get all guesses for a location
     async getGuesses(id: string): Promise<Guesses[]> {
         try {
-
             const getGuesses = await this.locationRepository
                 .createQueryBuilder()
                 .select([
@@ -131,7 +130,6 @@ export class LocationService {
 
         if (checkGuess) {
             this.logger.error(`User with email: ${user.email} already has a guess for this location!`);
-            throw new Error('User already has a guess for this location!');
         } else {
             const guess = new Guesses();
             guess.latitude = latitude;
