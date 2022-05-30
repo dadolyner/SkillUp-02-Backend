@@ -12,6 +12,7 @@ import { AuthSignUpCredentialsDto } from './dto/auth-credentials-signup.dto';
 import { Logger } from '@nestjs/common';
 import { AuthChangeInfoDto } from './dto/auth-changeInfo.dto';
 import transporter from '../../mail/mailConfig';
+import { MailTemplate } from 'src/mail/mail.template';
 
 @EntityRepository(Users)
 export class AuthRepository extends Repository<Users> {
@@ -72,14 +73,11 @@ export class AuthRepository extends Repository<Users> {
             currentUser.passRequestToken = passRequestToken
             currentUser.passRequestTokenExpiryDate = passRequestTokenExpiryDate.toString();
 
-            transporter.sendMail({
-                from: '"Geotagger Support" <skulj@geotagger.com>',
+            await transporter.sendMail({
+                from: '"Geotagger Support" <support@geotagger.com>',
                 to: email,
                 subject: 'Password change request',
-                text: ``,
-                html: `<h3>Hello ${first_name} ${last_name}</h3>
-                        <p>You have requested to change your password. Please click on the link below to change your password.</p>
-                        <a href="http://localhost:3000/auth/change-password/${passRequestToken}">Change password</a>`,
+                html: MailTemplate(first_name, last_name, `http://localhost:3000/auth/change-password/${passRequestToken}`),
             });
 
             this.logger.verbose(`User with email: ${currentUser.email} has requested password change!`);
