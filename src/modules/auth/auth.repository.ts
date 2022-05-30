@@ -11,7 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { AuthSignUpCredentialsDto } from './dto/auth-credentials-signup.dto';
 import { Logger } from '@nestjs/common';
 import { AuthChangeInfoDto } from './dto/auth-changeInfo.dto';
-import transporter from '../../mail/mailConfig';
+import transporter from '../../mail/mail.config';
 import { MailTemplate } from 'src/mail/mail.template';
 
 @EntityRepository(Users)
