@@ -160,8 +160,8 @@ export class LocationService {
 
         const a = Math.sin(latDiff / 2) * Math.sin(latDiff / 2) + Math.sin(lonDiff / 2) * Math.sin(lonDiff / 2) * Math.cos(latitude1) * Math.cos(latitude2);
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-        const d = earthRadius * c;
+        const distance = earthRadius * c;
 
-        return Math.trunc(d);
+        return Math.trunc(distance);
     }
 }
