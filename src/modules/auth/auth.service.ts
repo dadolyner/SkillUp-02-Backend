@@ -53,7 +53,7 @@ export class AuthService {
     }
 
     // Request password reset
-    async requestPasswordChange(user: Users): Promise<void> {
+    async requestPasswordChange(user: Users): Promise<{ passRequestToken:string }> {
         return this.authRepository.requestPasswordChange(user);
     }
 

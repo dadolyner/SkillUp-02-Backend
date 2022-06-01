@@ -62,7 +62,7 @@ export class AuthRepository extends Repository<Users> {
     }
 
     // Send request password mail to user
-    async requestPasswordChange(user: Users): Promise<void> {
+    async requestPasswordChange(user: Users): Promise<{ passRequestToken:string }> {
         const currentUser = await this.findOne(user);
         const { first_name, last_name, email } = currentUser;
 
@@ -82,6 +82,7 @@ export class AuthRepository extends Repository<Users> {
 
             this.logger.verbose(`User with email: ${currentUser.email} has requested password change!`);
             await this.save(currentUser);
+            return { passRequestToken }
         } catch (error) {
             this.logger.error(`User with email ${email} does not exist!`);
             throw new InternalServerErrorException();

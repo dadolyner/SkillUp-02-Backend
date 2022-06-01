@@ -42,7 +42,7 @@ export class AuthController {
     // Request password reset
     @UseGuards(AuthGuard())
     @Post('/request-password-change')
-    requestPasswordChange(@GetUser() user: Users): Promise<void> {
+    requestPasswordChange(@GetUser() user: Users): Promise<{ passRequestToken:string }> {
         return this.authService.requestPasswordChange(user);
     }
 
