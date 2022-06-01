@@ -4,11 +4,12 @@ import * as request from 'supertest';
 
 import { AuthModule } from '../../src/modules/auth/auth.module';
 import { AuthLoginCredentialsDto } from '../../src/modules/auth/dto/auth-credentials-login.dto';
+import { LocationParameters } from '../../src/modules/location/dto/location-parameters.dto';
 import { TypeOrmConfig } from '../../src/config/config.typeorm';
 import { LocationModule } from '../../src/modules/location/location.module';
 
-export const GetGuessesForLocationTest = () =>
-    describe('[LocationController] => Get All Guesses For A Location Test', () => {
+export const EditLocationTest = () =>
+    describe('[LocationController] => Edit A Location Test', () => {
         let app: INestApplication;
         let accessToken: string;
         let locationId: string;
@@ -41,11 +42,17 @@ export const GetGuessesForLocationTest = () =>
                 .then(response => { expect(response.body).toHaveProperty('id'); locationId = response.body.id })
         })
 
-        it('User successfully retrieved all guesses for a location', async () => {
+        it('User successfully edited a location', async () => {
+            const locationParams: LocationParameters = {
+                "latitude": "45.921469",
+                "longitude": "14.228370",
+                "image": "https://www.example.com/file/GeotaggerExample.png"
+            }
             return request(app.getHttpServer())
-                .get(`/location/guesses/${locationId}`)
+                .patch(`/location/edit/${locationId}`)
                 .set('Authorization', `Bearer ${accessToken}`)
                 .set('Content-Type', 'application/json')
+                .send(locationParams)
                 .expect(200)
         })
     })

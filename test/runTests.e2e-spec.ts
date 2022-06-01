@@ -13,6 +13,9 @@ import { CreateLocationTest } from "./location/location-create";
 import { GetAllLocationsTest } from "./location/location-get";
 import { GetRandomLocationTest } from "./location/location-get-random";
 import { GetGuessesForLocationTest } from "./location/location-get-guesses";
+import { AddGuessForLocationTest } from "./location/location-guess";
+import { EditLocationTest } from "./location/location-edit";
+import { DeleteLocationTest } from "./location/location-delete";
 
 describe('Run Tests', () => {
     // AUTH TESTS
@@ -30,6 +33,9 @@ describe('Run Tests', () => {
     GetAllLocationsTest()
     GetRandomLocationTest()
     GetGuessesForLocationTest()
+    AddGuessForLocationTest()
+    EditLocationTest()
+    DeleteLocationTest()
 
     afterAll(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmConfig] }).compile()

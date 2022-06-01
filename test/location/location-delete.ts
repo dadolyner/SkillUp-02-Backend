@@ -7,8 +7,8 @@ import { AuthLoginCredentialsDto } from '../../src/modules/auth/dto/auth-credent
 import { TypeOrmConfig } from '../../src/config/config.typeorm';
 import { LocationModule } from '../../src/modules/location/location.module';
 
-export const GetGuessesForLocationTest = () =>
-    describe('[LocationController] => Get All Guesses For A Location Test', () => {
+export const DeleteLocationTest = () =>
+    describe('[LocationController] => Delete A Location Test', () => {
         let app: INestApplication;
         let accessToken: string;
         let locationId: string;
@@ -41,9 +41,9 @@ export const GetGuessesForLocationTest = () =>
                 .then(response => { expect(response.body).toHaveProperty('id'); locationId = response.body.id })
         })
 
-        it('User successfully retrieved all guesses for a location', async () => {
+        it('User successfully deleted a location', async () => {
             return request(app.getHttpServer())
-                .get(`/location/guesses/${locationId}`)
+                .delete(`/location/delete/${locationId}`)
                 .set('Authorization', `Bearer ${accessToken}`)
                 .set('Content-Type', 'application/json')
                 .expect(200)
