@@ -46,6 +46,7 @@ export class LocationService {
             const getRandomLocation = this.locationRepository
                 .createQueryBuilder()
                 .select([
+                    'location.id',
                     'location.latitude',
                     'location.longitude',
                     'location.image',
