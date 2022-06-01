@@ -6,9 +6,7 @@ import { AuthModule } from '../../src/modules/auth/auth.module';
 import { AuthLoginCredentialsDto } from '../../src/modules/auth/dto/auth-credentials-login.dto';
 import { TypeOrmConfig } from '../../src/config/config.typeorm';
 
-export const LoginTest = () => {
-    let accessToken: string;
-
+export const LoginTest = () =>
     describe('[AuthController] => Login Test', () => {
         let app: INestApplication;
 
@@ -30,9 +28,6 @@ export const LoginTest = () => {
                 .set('Content-Type', 'application/json')
                 .send(userLogin)
                 .expect(201)
-                .then(response => { expect(response.body).toHaveProperty('accessToken'); accessToken = response.body.accessToken })
+                .then(response => { expect(response.body).toHaveProperty('accessToken'); })
         })
     })
-    
-    return accessToken;
-}
