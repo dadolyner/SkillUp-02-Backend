@@ -2,9 +2,9 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Guesses } from 'src/entities/guesses.entity';
-import { Locations } from 'src/entities/locations.entity';
-import { Users } from 'src/entities/users.entity';
+import { Guesses } from '../entities/guesses.entity';
+import { Locations } from '../entities/locations.entity';
+import { Users } from '../entities/users.entity';
 import { AuthModule } from '../modules/auth/auth.module';
 
 @Module({

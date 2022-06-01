@@ -2,12 +2,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LocationRepository } from './location.repository';
-import { Locations } from 'src/entities/locations.entity';
+import { Locations } from '../../entities/locations.entity';
 import { LocationParameters } from './dto/location-parameters.dto';
-import { Users } from 'src/entities/users.entity';
+import { Users } from '../../entities/users.entity';
 import { Logger } from '@nestjs/common';
 import { GuessParameters } from './dto/guess-parameters.dto';
-import { Guesses } from 'src/entities/guesses.entity';
+import { Guesses } from '../../entities/guesses.entity';
 
 @Injectable()
 export class LocationService {

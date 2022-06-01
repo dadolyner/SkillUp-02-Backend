@@ -1,5 +1,5 @@
 //User/Quote Repository
-import { Users } from 'src/entities/users.entity';
+import { Users } from '../../entities/users.entity';
 import { EntityRepository, Repository } from 'typeorm';
 
 @EntityRepository(Users)

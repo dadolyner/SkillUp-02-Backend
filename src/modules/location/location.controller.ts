@@ -1,9 +1,9 @@
 // Locations Controller
 import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
-import { Guesses } from 'src/entities/guesses.entity';
-import { Locations } from 'src/entities/locations.entity';
-import { Users } from 'src/entities/users.entity';
+import { Guesses } from '../../entities/guesses.entity';
+import { Locations } from '../../entities/locations.entity';
+import { Users } from '../../entities/users.entity';
 import { GetUser } from '../auth/decorator/get-user.decorator';
 import { GuessParameters } from './dto/guess-parameters.dto';
 import { LocationParameters } from './dto/location-parameters.dto';

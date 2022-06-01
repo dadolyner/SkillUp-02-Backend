@@ -1,8 +1,8 @@
 // Locations Repository
 import { EntityRepository, Repository } from 'typeorm';
-import { Locations } from 'src/entities/locations.entity';
+import { Locations } from '../../entities/locations.entity';
 import { LocationParameters } from './dto/location-parameters.dto';
-import { Users } from 'src/entities/users.entity';
+import { Users } from '../../entities/users.entity';
 import { Logger, UnauthorizedException } from '@nestjs/common';
 
 @EntityRepository(Locations)

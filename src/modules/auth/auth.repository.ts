@@ -6,13 +6,13 @@ import {
 } from '@nestjs/common';
 import { EntityRepository, Repository } from 'typeorm';
 import { AuthLoginCredentialsDto } from './dto/auth-credentials-login.dto';
-import { Users } from 'src/entities/users.entity';
+import { Users } from '../../entities/users.entity';
 import * as bcrypt from 'bcrypt';
 import { AuthSignUpCredentialsDto } from './dto/auth-credentials-signup.dto';
 import { Logger } from '@nestjs/common';
 import { AuthChangeInfoDto } from './dto/auth-changeInfo.dto';
 import transporter from '../../mail/mail.config';
-import { MailTemplate } from 'src/mail/mail.template';
+import { MailTemplate } from '../../mail/mail.template';
 
 @EntityRepository(Users)
 export class AuthRepository extends Repository<Users> {
