@@ -25,7 +25,7 @@ export class AuthService {
     }
 
     //login
-    async logIn(userCredentialsDto: AuthLoginCredentialsDto): Promise<{ accesToken: string }> {
+    async logIn(userCredentialsDto: AuthLoginCredentialsDto): Promise<{ accessToken: string }> {
         const { email } = userCredentialsDto;
         const emailExists = await this.authRepository.findOne({ email });
         const validate = await this.authRepository.validateUserPassword(userCredentialsDto);
@@ -42,11 +42,11 @@ export class AuthService {
             }
 
             const payload: JwtPayload = { email };
-            const accesToken = await this.jwtService.sign(payload);
+            const accessToken = await this.jwtService.sign(payload);
 
             this.logger.verbose(`User with email: ${userCredentialsDto.email} logged in!`);
 
-            return { accesToken };
+            return { accessToken };
         } catch (error) {
             throw new UnauthorizedException('Invalid credentials');
         }
