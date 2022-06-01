@@ -8,14 +8,21 @@ import { ClearTables } from "./ClearTables";
 import { INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
 import { TypeOrmConfig } from "../src/config/config.typeorm";
+import { MyInfoTest } from "./user/user-getMyInfo";
 
 describe('Run Tests', () => {
-    jest.setTimeout(30000);
+    // AUTH TESTS
     SignUpTest();
     LoginTest();
     ChangeInfoTest();
     ChangeProfileImageTest();
     ChangePasswordTest();
+
+    // USER TESTS
+    MyInfoTest()
+
+    // LOCATION TESTS
+    
 
     afterAll(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmConfig] }).compile();
