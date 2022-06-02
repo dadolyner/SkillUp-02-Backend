@@ -7,7 +7,7 @@ import { ChangePasswordTest } from "./auth/auth-changePassword";
 import { ClearTables } from "./ClearTables";
 import { INestApplication } from "@nestjs/common";
 import { Test, TestingModule } from "@nestjs/testing";
-import { TypeOrmConfig } from "../src/config/config.typeorm";
+import { TypeOrmTestConfig } from "../src/config/config-test.typeorm";
 import { MyInfoTest } from "./user/user-getMyInfo";
 import { CreateLocationTest } from "./location/location-create";
 import { GetAllLocationsTest } from "./location/location-get";
@@ -38,7 +38,7 @@ describe('Running Tests On Testing Database', () => {
     DeleteLocationTest()
 
     afterAll(async () => {
-        const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmConfig] }).compile()
+        const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmTestConfig] }).compile()
         const app: INestApplication = moduleFixture.createNestApplication()
         await app.init()
         await ClearTables()
