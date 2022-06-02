@@ -32,6 +32,9 @@ export class Guesses extends BaseEntity {
     @Column()
     locationId: string;
 
+    @Column()
+    locationImage: string;
+
     // Relations
     // User
     @ManyToOne(() => Users, user => user.guess, { onUpdate: 'CASCADE', onDelete: 'RESTRICT' })

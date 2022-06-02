@@ -139,10 +139,12 @@ export class LocationService {
             guess.user = user;
             guess.location = location
             guess.timestamp = new Date();
+            guess.locationImage = location.image;
 
             try {
                 await guess.save();
                 this.logger.verbose(`User with email: ${user.email} successfully guessed the location with id ${id}!`);
+                return guess;
             } catch (error) { return error; }
         }
     }

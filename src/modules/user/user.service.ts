@@ -34,6 +34,8 @@ export class UserService {
                     'guess.longitude',
                     'guess.distance',
                     'guess.timestamp',
+                    'guess.locationId',
+                    'guess.locationImage'
                 ])
                 .from(Users, 'user')
                 .leftJoin('user.location', 'location')

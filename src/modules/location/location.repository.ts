@@ -23,8 +23,11 @@ export class LocationRepository extends Repository<Locations> {
 
             await location.save()
             this.logger.verbose(`User with email: ${user.email} successfully created a new location at Lat: ${latitude} and Long: ${longitude}!`);
+            return location;
         }
-        catch (error) { return error }
+        catch (error) {
+            throw new UnauthorizedException();
+        }
     }
 
     // Delete Location
