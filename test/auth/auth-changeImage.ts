@@ -10,7 +10,6 @@ import { AuthLoginCredentialsDto } from 'src/modules/auth/dto/auth-credentials-l
 export const ChangeProfileImageTest = () =>
     describe('[AuthController] => Change Profile Image Test', () => {
         let app: INestApplication;
-        let accessToken: string;
 
         beforeAll(async () => {
             const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmConfig, AuthModule] }).compile();
@@ -20,23 +19,12 @@ export const ChangeProfileImageTest = () =>
 
         afterAll(async () => { await app.close() });
 
-        it('AccessToken successfully retrieved', async () => {
-            const userLogin: AuthLoginCredentialsDto = {
-                "email": "test.test@example.com",
-                "password": "testing12345"
-            }
-            return request(app.getHttpServer())
-                .post('/auth/login')
-                .set('Content-Type', 'application/json')
-                .send(userLogin)
-                .expect(201)
-                .then(response => { expect(response.body).toHaveProperty('accessToken'); accessToken = response.body.accessToken })
-        })
-
         it('Users profile image successfully updated', async () => {
-            const userChangeProfileImage = {
-                "image": "https://www.example.com/file/GeotaggerExample.png"
-            }
+            const userLoginParams: AuthLoginCredentialsDto = { "email": "test.test@example.com", "password": "testing12345" };
+            const loginResponse: request.Response = await request(app.getHttpServer()).post('/auth/login').send(userLoginParams);
+            const accessToken = loginResponse.body.accessToken;
+
+            const userChangeProfileImage = { "image": "https://www.example.com/file/GeotaggerExample.png" }
             return request(app.getHttpServer())
                 .patch('/auth/change-profile-image')
                 .set('Authorization', `Bearer ${accessToken}`)

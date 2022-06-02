@@ -11,7 +11,6 @@ import { AuthLoginCredentialsDto } from 'src/modules/auth/dto/auth-credentials-l
 export const ChangeInfoTest = () =>
     describe('[AuthController] => Change User Info Test', () => {
         let app: INestApplication;
-        let accessToken: string;
 
         beforeAll(async () => {
             const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmConfig, AuthModule] }).compile();
@@ -21,20 +20,11 @@ export const ChangeInfoTest = () =>
 
         afterAll(async () => { await app.close() });
 
-        it('AccessToken successfully retrieved', async () => {
-            const userLogin: AuthLoginCredentialsDto = {
-                "email": "test.test@example.com",
-                "password": "testing12345"
-            }
-            return request(app.getHttpServer())
-                .post('/auth/login')
-                .set('Content-Type', 'application/json')
-                .send(userLogin)
-                .expect(201)
-                .then(response => { expect(response.body).toHaveProperty('accessToken'); accessToken = response.body.accessToken })
-        })
-
         it('Users information successfully updated', async () => {
+            const userLoginParams: AuthLoginCredentialsDto = { "email": "test.test@example.com", "password": "testing12345" };
+            const loginResponse: request.Response = await request(app.getHttpServer()).post('/auth/login').send(userLoginParams);
+            const accessToken = loginResponse.body.accessToken;
+            
             const userChangeInfo: AuthChangeInfoDto = {
                 "first_name": 'Test',
                 "last_name": 'Example',

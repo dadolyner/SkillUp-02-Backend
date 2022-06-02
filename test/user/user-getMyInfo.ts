@@ -10,7 +10,6 @@ import { UserModule } from '../../src/modules/user/user.module';
 export const MyInfoTest = () =>
     describe('[UserController] => Get My Info Test', () => {
         let app: INestApplication;
-        let accessToken: string;
 
         beforeAll(async () => {
             const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmConfig, AuthModule, UserModule] }).compile();
@@ -20,20 +19,11 @@ export const MyInfoTest = () =>
 
         afterAll(async () => { await app.close() });
 
-        it('AccessToken successfully retrieved', async () => {
-            const userLogin: AuthLoginCredentialsDto = {
-                "email": "test.test@example.com",
-                "password": "testing123"
-            }
-            return request(app.getHttpServer())
-                .post('/auth/login')
-                .set('Content-Type', 'application/json')
-                .send(userLogin)
-                .expect(201)
-                .then(response => { expect(response.body).toHaveProperty('accessToken'); accessToken = response.body.accessToken })
-        })
-
         it('User successfully retrieved its information', async () => {
+            const userLoginParams: AuthLoginCredentialsDto = { "email": "test.test@example.com", "password": "testing123" };
+            const loginResponse: request.Response = await request(app.getHttpServer()).post('/auth/login').send(userLoginParams);
+            const accessToken = loginResponse.body.accessToken;
+           
             return request(app.getHttpServer())
                 .get('/user/me')
                 .set('Authorization', `Bearer ${accessToken}`)

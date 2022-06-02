@@ -10,8 +10,6 @@ import { LocationModule } from '../../src/modules/location/location.module';
 export const GetGuessesForLocationTest = () =>
     describe('[LocationController] => Get All Guesses For A Location Test', () => {
         let app: INestApplication;
-        let accessToken: string;
-        let locationId: string;
 
         beforeAll(async () => {
             const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmConfig, AuthModule, LocationModule] }).compile();
@@ -21,27 +19,14 @@ export const GetGuessesForLocationTest = () =>
 
         afterAll(async () => { await app.close() });
 
-        it('AccessToken successfully retrieved', async () => {
-            const userLogin: AuthLoginCredentialsDto = {
-                "email": "test.test@example.com",
-                "password": "testing123"
-            }
-            return request(app.getHttpServer())
-                .post('/auth/login')
-                .set('Content-Type', 'application/json')
-                .send(userLogin)
-                .expect(201)
-                .then(response => { expect(response.body).toHaveProperty('accessToken'); accessToken = response.body.accessToken })
-        })
-
-        it('User successfully retrieved a location', async () => {
-            return request(app.getHttpServer())
-                .get('/location/random')
-                .expect(200)
-                .then(response => { expect(response.body).toHaveProperty('id'); locationId = response.body.id })
-        })
-
         it('User successfully retrieved all guesses for a location', async () => {
+            const userLoginParams: AuthLoginCredentialsDto = { "email": "test.test@example.com", "password": "testing123" };
+            const loginResponse: request.Response = await request(app.getHttpServer()).post('/auth/login').send(userLoginParams);
+            const accessToken = loginResponse.body.accessToken;
+
+            const locationResponse: request.Response = await request(app.getHttpServer()).get('/location/random')
+            const locationId = locationResponse.body.id;
+
             return request(app.getHttpServer())
                 .get(`/location/guesses/${locationId}`)
                 .set('Authorization', `Bearer ${accessToken}`)

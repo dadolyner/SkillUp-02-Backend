@@ -21,20 +21,11 @@ export const ChangePasswordTest = () =>
 
         afterAll(async () => { await app.close() });
 
-        it('AccessToken successfully retrieved', async () => {
-            const userLogin: AuthLoginCredentialsDto = {
-                "email": "test.test@example.com",
-                "password": "testing12345"
-            }
-            return request(app.getHttpServer())
-                .post('/auth/login')
-                .set('Content-Type', 'application/json')
-                .send(userLogin)
-                .expect(201)
-                .then(response => { expect(response.body).toHaveProperty('accessToken'); accessToken = response.body.accessToken })
-        })
-
         it('User has successfully requested a change password token', async () => {
+            const userLoginParams: AuthLoginCredentialsDto = { "email": "test.test@example.com", "password": "testing12345" };
+            const loginResponse: request.Response = await request(app.getHttpServer()).post('/auth/login').send(userLoginParams);
+            accessToken = loginResponse.body.accessToken;
+            
             return request(app.getHttpServer())
                 .post('/auth/request-password-change')
                 .set('Authorization', `Bearer ${accessToken}`)
