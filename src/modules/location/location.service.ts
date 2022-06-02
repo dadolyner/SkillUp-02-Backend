@@ -28,6 +28,7 @@ export class LocationService {
                     'location.longitude',
                     'location.image',
                     'location.timestamp',
+                    'location.userId'
                 ])
                 .from(Locations, 'location')
                 .limit(locationsLimit)
