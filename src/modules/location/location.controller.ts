@@ -19,6 +19,12 @@ export class LocationController {
         return await this.locationService.getLocations(locationsLimit);
     }
 
+    // Get location by its id
+    @Get('/:id')
+    async getLocationById(@Param('id') id: string): Promise<Locations> {
+        return await this.locationService.getLocationById(id);
+    }
+
     // Get Random Location
     @Get('/random')
     async getRandomLocation(): Promise<Locations> {

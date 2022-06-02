@@ -41,6 +41,11 @@ export class LocationService {
         }
     }
 
+    // Get all info from location by its id
+    async getLocationById(id: string): Promise<Locations> {
+        return this.locationRepository.findOne(id);
+    }
+
     // Get Random Location
     async getRandomLocation(): Promise<Locations> {
         try {
