@@ -2,8 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 
-import { AuthModule } from '../../src/modules/auth/auth.module';
-import { TypeOrmConfig } from '../../src/config/config.typeorm';
+import { TypeOrmTestConfig } from '../../src/config/config-test.typeorm';
 import { LocationModule } from '../../src/modules/location/location.module';
 
 export const GetAllLocationsTest = () =>
@@ -11,7 +10,7 @@ export const GetAllLocationsTest = () =>
         let app: INestApplication;
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmConfig, AuthModule, LocationModule] }).compile();
+            const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmTestConfig, LocationModule] }).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });

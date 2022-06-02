@@ -17,7 +17,7 @@ import { AddGuessForLocationTest } from "./location/location-guess";
 import { EditLocationTest } from "./location/location-edit";
 import { DeleteLocationTest } from "./location/location-delete";
 
-describe('Running Tests', () => {
+describe('Running Tests On Testing Database', () => {
     // AUTH TESTS
     SignUpTest()
     LoginTest()

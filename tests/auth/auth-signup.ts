@@ -4,14 +4,14 @@ import * as request from 'supertest';
 
 import { AuthModule } from '../../src/modules/auth/auth.module';
 import { AuthSignUpCredentialsDto } from '../../src/modules/auth/dto/auth-credentials-signup.dto';
-import { TypeOrmConfig } from '../../src/config/config.typeorm';
+import { TypeOrmTestConfig } from '../../src/config/config-test.typeorm';
 
 export const SignUpTest = () =>
     describe('[AuthController] => SignUp Test', () => {
         let app: INestApplication;
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmConfig, AuthModule] }).compile();
+            const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmTestConfig, AuthModule] }).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });

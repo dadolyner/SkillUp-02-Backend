@@ -4,7 +4,7 @@ import * as request from 'supertest';
 
 import { AuthModule } from '../../src/modules/auth/auth.module';
 import { AuthLoginCredentialsDto } from '../../src/modules/auth/dto/auth-credentials-login.dto';
-import { TypeOrmConfig } from '../../src/config/config.typeorm';
+import { TypeOrmTestConfig } from '../../src/config/config-test.typeorm';
 import { UserModule } from '../../src/modules/user/user.module';
 
 export const MyInfoTest = () =>
@@ -12,7 +12,7 @@ export const MyInfoTest = () =>
         let app: INestApplication;
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmConfig, AuthModule, UserModule] }).compile();
+            const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmTestConfig, AuthModule, UserModule] }).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });

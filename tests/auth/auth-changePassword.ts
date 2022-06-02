@@ -3,7 +3,7 @@ import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 
 import { AuthModule } from '../../src/modules/auth/auth.module';
-import { TypeOrmConfig } from '../../src/config/config.typeorm';
+import { TypeOrmTestConfig } from '../../src/config/config-test.typeorm';
 
 import { AuthLoginCredentialsDto } from 'src/modules/auth/dto/auth-credentials-login.dto';
 
@@ -14,7 +14,7 @@ export const ChangePasswordTest = () =>
         let passRequestToken: string;
 
         beforeAll(async () => {
-            const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmConfig, AuthModule] }).compile();
+            const moduleFixture: TestingModule = await Test.createTestingModule({ imports: [TypeOrmTestConfig, AuthModule] }).compile();
             app = moduleFixture.createNestApplication();
             await app.init();
         });
