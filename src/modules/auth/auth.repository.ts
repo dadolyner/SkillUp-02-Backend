@@ -77,7 +77,7 @@ export class AuthRepository extends Repository<Users> {
                 from: '"Geotagger Support" <support@geotagger.com>',
                 to: email,
                 subject: 'Password change request',
-                html: MailTemplate(first_name, last_name, `http://localhost:3001/change-password/${passRequestToken}`),
+                html: MailTemplate(first_name, last_name, `${process.env.SERVER_IP}/change-password/${passRequestToken}`),
             });
 
             this.logger.verbose(`User with email: ${currentUser.email} has requested password change!`);
