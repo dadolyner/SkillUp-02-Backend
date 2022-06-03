@@ -81,8 +81,10 @@ export class LocationService {
                     'guess.longitude',
                     'guess.distance',
                     'guess.timestamp',
+                    'userGuessed.id',
                     'userGuessed.first_name',
                     'userGuessed.last_name',
+                    'userGuessed.avatar'
                 ])
                 .from(Guesses, 'guess')
                 .leftJoin('guess.user', 'userGuessed')

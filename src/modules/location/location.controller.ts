@@ -31,7 +31,7 @@ export class LocationController {
         return await this.locationService.getRandomLocation();
     }
 
-    // Guess Location
+    // Get Guesses for Location
     @UseGuards(AuthGuard())
     @Get('/guesses/:id')
     async getGuesses(@Param('id') id: string): Promise<Guesses[]> {
