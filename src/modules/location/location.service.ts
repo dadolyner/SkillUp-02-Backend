@@ -156,7 +156,7 @@ export class LocationService {
     }
     
     // Calculate distance between two points
-    calculateDistance(lat1: number, long1: number, lat2: number, long2: number): number {
+    calculateDistance(lat1: number, long1: number, lat2: number, long2: number): string {
         // Convert degrees to radians
         const toRad = (value: number): number => { return value * Math.PI / 180 }
         const earthRadius = 6371;
@@ -169,6 +169,6 @@ export class LocationService {
         const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
         const distance = earthRadius * c;
 
-        return Math.trunc(distance);
+        return distance.toFixed(4);
     }
 }

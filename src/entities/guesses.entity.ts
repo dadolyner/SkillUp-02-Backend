@@ -21,7 +21,7 @@ export class Guesses extends BaseEntity {
     longitude: string;
 
     @Column()
-    distance: number;
+    distance: string;
 
     @Column()
     timestamp: Date;
