@@ -95,8 +95,8 @@ $ yarn run test:e2e:watch
 ## License
 MIT License
 
-Copyright (c) 2021 [skillupmentor](https://skillupmentor.com/)
-Copyright (c) 2022 [David Škulj](https://github.com/dadolyner)
+- Copyright (c) 2021 [skillupmentor](https://skillupmentor.com/)
+- Copyright (c) 2022 [David Škulj](https://github.com/dadolyner)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
