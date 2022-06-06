@@ -1,5 +1,5 @@
 // Locations Controller
-import { Body, Controller, Delete, Get, Param, Patch, Post, UseGuards } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { Guesses } from '../../entities/guesses.entity';
 import { Locations } from '../../entities/locations.entity';
@@ -15,7 +15,7 @@ export class LocationController {
 
     // Get all locations with limit
     @Get()
-    async getLocations(@Body('locationsLimit') locationsLimit: number): Promise<Locations[]> {
+    async getLocations(@Query('limit') locationsLimit: number): Promise<Locations[]> {
         return await this.locationService.getLocations(locationsLimit);
     }
 

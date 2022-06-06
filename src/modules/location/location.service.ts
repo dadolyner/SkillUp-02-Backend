@@ -31,6 +31,8 @@ export class LocationService {
                     'location.userId'
                 ])
                 .from(Locations, 'location')
+                .orderBy('location.timestamp', 'DESC')
+                .groupBy('location.id')
                 .limit(locationsLimit)
                 .getMany();
 
