@@ -26,7 +26,7 @@ export class LocationController {
     }
 
     // Get Random Location
-    @Get('/random')
+    @Get('/get/random')
     async getRandomLocation(): Promise<Locations> {
         return await this.locationService.getRandomLocation();
     }

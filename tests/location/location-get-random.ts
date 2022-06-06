@@ -19,7 +19,7 @@ export const GetRandomLocationTest = () =>
 
         it('User successfully retrieved a random location', async () => {
             return request(app.getHttpServer())
-                .get('/location/random')
+                .get('/location/get/random')
                 .set('Content-Type', 'application/json')
                 .expect(200)
         })
