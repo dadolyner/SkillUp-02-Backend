@@ -11,7 +11,7 @@ import * as bcrypt from 'bcrypt';
 import { Guesses } from './guesses.entity';
 import { Locations } from './locations.entity';
 
-@Entity()
+@Entity('users')
 @Unique(['email'])
 export class Users extends BaseEntity {
     @PrimaryGeneratedColumn('uuid')

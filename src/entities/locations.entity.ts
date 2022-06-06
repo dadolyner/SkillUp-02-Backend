@@ -10,7 +10,7 @@ import {
 import { Guesses } from './guesses.entity';
 import { Users } from './users.entity';
 
-@Entity()
+@Entity('locations')
 export class Locations extends BaseEntity {
     
     @PrimaryGeneratedColumn('uuid')
