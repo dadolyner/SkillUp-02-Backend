@@ -12,7 +12,6 @@ import { Users } from './users.entity';
 
 @Entity('locations')
 export class Locations extends BaseEntity {
-    
     @PrimaryGeneratedColumn('uuid')
     id: string;
 
