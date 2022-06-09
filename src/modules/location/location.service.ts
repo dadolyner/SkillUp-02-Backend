@@ -45,30 +45,29 @@ export class LocationService {
 
     // Get all info from location by its id
     async getLocationById(id: string): Promise<Locations> {
-        return this.locationRepository.findOne(id);
-    }
+        if (id === 'random') {
+            try {
+                const getRandomLocation = this.locationRepository
+                    .createQueryBuilder()
+                    .select([
+                        'location.id',
+                        'location.latitude',
+                        'location.longitude',
+                        'location.image',
+                        'location.timestamp',
+                    ])
+                    .from(Locations, 'location')
+                    .orderBy('RANDOM()')
+                    .limit(1)
+                    .getOne();
 
-    // Get Random Location
-    async getRandomLocation(): Promise<Locations> {
-        try {
-            const getRandomLocation = this.locationRepository
-                .createQueryBuilder()
-                .select([
-                    'location.id',
-                    'location.latitude',
-                    'location.longitude',
-                    'location.image',
-                    'location.timestamp',
-                ])
-                .from(Locations, 'location')
-                .orderBy('RANDOM()')
-                .limit(1)
-                .getOne();
-
-            this.logger.verbose(`Random location successfully retrieved!`);
-            return getRandomLocation;
-        } catch (error) {
-            return error;
+                this.logger.verbose(`Random location successfully retrieved!`);
+                return getRandomLocation;
+            } catch (error) {
+                return error;
+            }
+        } else {
+            return this.locationRepository.findOne(id);
         }
     }
 
@@ -158,7 +157,7 @@ export class LocationService {
             } catch (error) { return error; }
         }
     }
-    
+
     // Calculate distance between two points
     calculateDistance(lat1: number, long1: number, lat2: number, long2: number): string {
         // Convert degrees to radians

@@ -25,7 +25,7 @@ export const EditLocationTest = () =>
             const loginResponse: request.Response = await request(app.getHttpServer()).post('/auth/login').send(userLoginParams);
             const accessToken = loginResponse.body.accessToken;
 
-            const locationResponse: request.Response = await request(app.getHttpServer()).get('/location/get/random')
+            const locationResponse: request.Response = await request(app.getHttpServer()).get('/location/random')
             const locationId = locationResponse.body.id;
 
             const locationParams: LocationParameters = {
